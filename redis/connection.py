@@ -1419,7 +1419,6 @@ class ConnectionPool:
         # will notice the first thread already did the work and simply
         # release the lock.
         self._fork_lock = threading.Lock()
-        self._lock = threading.Lock()
         self.reset()
 
     def __repr__(self) -> (str, str):
@@ -1437,6 +1436,7 @@ class ConnectionPool:
         return self.connection_kwargs.get("protocol", None)
 
     def reset(self) -> None:
+        self._lock = threading.Lock()
         self._created_connections = 0
         self._available_connections = []
         self._in_use_connections = set()
